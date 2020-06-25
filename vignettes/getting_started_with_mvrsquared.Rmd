@@ -217,7 +217,9 @@ r2_lsa
 
 # Parallelization/distributed computing for large data sets
 
-You say you have BIG DATA?!?! Below is an example of how to chop up a calculation and have r-squared built in parallel. `mvrsquared` doesn't have a parallel back end itself. You can bring your own. (I recommend using `furrr` which is built on the wonderful `future` package. The example below uses `parallel::mclapply` which will not parallelize on Windows.) However, what `mvrsquared` does is have the option to return only the sums of squares (specifically SSE and SST). You can calculate these in parallel/distributed and combine them by adding post-hoc. (That's a little algorithm called "map-reduce" for those in the know.) Once combined, you can calculate R-squared yourself with the canonical formula $1 - \frac{SSE}{SST}$. 
+You say you have BIG DATA?!?! Below is an example of how to chop up a calculation and have r-squared built in parallel in a distributed setting. `mvrsquared` has a parallel back end using [`RcppThread`](https://CRAN.R-project.org/package=RcppThread) and controlled by the `threads` argument. However, if that isn't enough, you can bring your own distributed parallel framework. The example below uses `parallel::mclapply` which will not parallelize on Windows, but R has other options. 
+
+`mvrsquared` has the option to return only the sums of squares (specifically SSE and SST). You can calculate these in parallel/distributed and combine them by adding post-hoc. (That's a little algorithm called "map-reduce" for those in the know.) Once combined, you can calculate R-squared yourself with the canonical formula $1 - \frac{SSE}{SST}$. 
 
 Note: You **must** calculate the mean of your outcome, $\bar{y}$, first and hand it off to `calc_rsquared`. Otherwise, your calculations for SST on a given core will be based only on the observations sent to that core, not the whole data set. (If you do this, `calc_rsquared` will give you a WARNING.)
 

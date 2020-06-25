@@ -4,7 +4,7 @@
 \alias{calc_rsquared}
 \title{Calculate R-Squared.}
 \usage{
-calc_rsquared(y, yhat, ybar = NULL, return_ss_only = FALSE)
+calc_rsquared(y, yhat, ybar = NULL, return_ss_only = FALSE, threads = 1)
 }
 \arguments{
 \item{y}{The true outcome. This must be a numeric vector, numeric matrix, or
@@ -19,6 +19,8 @@ computation in batches.}
 
 \item{return_ss_only}{Logical. Do you want to forego calculating R-squared and
 only return the sums of squares?}
+
+\item{threads}{Integer number of threads for parallelism; defaults to 1.}
 }
 \value{
 If \code{return_ss_only = FALSE}, \code{calc_rsqured} returns a numeric
@@ -79,30 +81,4 @@ calc_rsquared(y = cbind(y, y), yhat = cbind(yhat, yhat))
 
 # multivariate r-squared with yhat as a linear reconstruction of two matrices
 calc_rsquared(y = cbind(y, y), yhat = list(x, cbind(w,w)))
-
-# multivariate r-squared calculated in parallel
-\donttest{
-library(furrr)
-
-plan(multiprocess)
-
-batches <- list(list(y = cbind(y[1:16], y[1:16]), yhat = cbind(yhat[1:16], yhat[1:16])),
-                list(y = cbind(y[17:32], y[17:32]), yhat = cbind(yhat[17:32], yhat[17:32])))
-
-ybar <- c(mean(y), mean(y))
-
-ss <- future_map(.x = batches,
-                 .f = function(ybatch){
-                   calc_rsquared(y = ybatch$y, yhat = ybatch$yhat,
-                                 ybar = ybar, return_ss_only = TRUE)
-                 },
-                 .options = future_options(scheduling = 2))
-
-
-sse <- sum(sapply(ss, function(x) x["sse"]))
-
-sst <- sum(sapply(ss, function(x) x["sst"]))
-
-1 - sse / sst # final r-squared value here
-}
 }

@@ -1,47 +1,68 @@
-
+// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::depends(RcppThread)]]
 // [[Rcpp::depends(RcppArmadillo)]]
+#include "RcppThread.h"
 #include <RcppArmadillo.h>
 #include <cmath>
 #define ARMA_64BIT_WORD
 using namespace Rcpp ;
 
 // [[Rcpp::export]]
-NumericVector calc_sum_squares_latent(arma::sp_mat Y, NumericMatrix X, NumericMatrix W, NumericVector ybar) {
+NumericVector calc_sum_squares_latent(
+    arma::sp_mat Y,
+    arma::mat X,
+    arma::mat W,
+    arma::vec ybar,
+    int threads
+) {
 
-  int n_obs = Y.n_rows; // number of observations
-  int n_latent_vars = X.ncol(); // number of latent variables
-  int n_explicit_vars = W.ncol(); // number of explicit variables
+  Y = Y.t(); // transpose Y to take advantage of column major for parallelism
+
+  int n_obs = Y.n_cols; // number of observations
   NumericVector result(2); // final result
   double SSE = 0; // sum of squared errors across all documents
   double SST = 0; // total sum of squares across all documents
 
 
+  // convert R equivalent classes to arma classes
+
+
   // for each observations...
-  for(int d = 0; d < n_obs; d++){
+  RcppThread::parallelFor(
+    0,
+    n_obs,
+    [&Y,
+     &X,
+     &W,
+     &ybar,
+     &SSE,
+     &SST
+    ] (unsigned int d){
+      RcppThread::checkUserInterrupt();
 
-    R_CheckUserInterrupt();
+      // Yhat = X %*% W. But doing it funny below to optimize calculation
+      double sse = 0;
+      double sst = 0;
 
-    // Yhat = X %*% W. But doing it funny below to optimize calculation
-    double sse = 0;
-    double sst = 0;
+      for(int v = 0; v < W.n_cols; v++ ){
+        double Yhat = 0;
 
-    for(int v = 0; v < n_explicit_vars; v++ ){
-      double Yhat = 0;
+        for(int k = 0; k < X.n_cols; k++ ){
+          Yhat = Yhat + X(d , k ) * W(k , v );
+        }
 
-      for(int k = 0; k < n_latent_vars; k++ ){
-        Yhat = Yhat + X(d , k ) * W(k , v );
+        sse = sse + ((Y(v, d) - Yhat) * (Y(v, d) - Yhat));
+
+        sst = sst + ((Y(v, d) - ybar[ v ]) * (Y(v, d) - ybar[ v ]));
+
       }
 
-      sse = sse + ((Y(d , v) - Yhat) * (Y(d , v) - Yhat));
+      SSE = SSE + sse;
 
-      sst = sst + ((Y(d , v) - ybar[ v ]) * (Y(d , v) - ybar[ v ]));
+      SST = SST + sst;
+    },
+    threads);
 
-    }
-
-    SSE = SSE + sse;
-
-    SST = SST + sst;
-  }
 
   result[ 0 ] = SSE;
   result[ 1 ] = SST;

@@ -1,3 +1,9 @@
+# mvrsquared v0.1.0 
+This version introduces parallel processing at the C++ level using RcppThread.
+
+To calculate R-squared in parallel, set the `threads` argument to a number 
+greater than 1 when calling `calc_rsquared`.
+
 # mvrsquared v0.0.3
 This version makes some changes to documentation including the README
 

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tommy Jones" />
 
-<meta name="date" content="2020-02-11" />
+<meta name="date" content="2020-06-24" />
 
 <title>Getting Started With mvrsquared</title>
 
@@ -301,7 +301,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Getting Started With mvrsquared</h1>
 <h4 class="author">Tommy Jones</h4>
-<h4 class="date">2020-02-11</h4>
+<h4 class="date">2020-06-24</h4>
 
 
 
@@ -501,7 +501,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="parallelizationdistributed-computing-for-large-data-sets" class="section level1">
 <h1>Parallelization/distributed computing for large data sets</h1>
-<p>You say you have BIG DATA?!?! Below is an example of how to chop up a calculation and have r-squared built in parallel. <code>mvrsquared</code> doesn’t have a parallel back end itself. You can bring your own. (I recommend using <code>furrr</code> which is built on the wonderful <code>future</code> package. The example below uses <code>parallel::mclapply</code> which will not parallelize on Windows.) However, what <code>mvrsquared</code> does is have the option to return only the sums of squares (specifically SSE and SST). You can calculate these in parallel/distributed and combine them by adding post-hoc. (That’s a little algorithm called “map-reduce” for those in the know.) Once combined, you can calculate R-squared yourself with the canonical formula <span class="math inline">\(1 - \frac{SSE}{SST}\)</span>.</p>
+<p>You say you have BIG DATA?!?! Below is an example of how to chop up a calculation and have r-squared built in parallel in a distributed setting. <code>mvrsquared</code> has a parallel back end using <a href="https://CRAN.R-project.org/package=RcppThread"><code>RcppThread</code></a> and controlled by the <code>threads</code> argument. However, if that isn’t enough, you can bring your own distributed parallel framework. The example below uses <code>parallel::mclapply</code> which will not parallelize on Windows, but R has other options.</p>
+<p><code>mvrsquared</code> has the option to return only the sums of squares (specifically SSE and SST). You can calculate these in parallel/distributed and combine them by adding post-hoc. (That’s a little algorithm called “map-reduce” for those in the know.) Once combined, you can calculate R-squared yourself with the canonical formula <span class="math inline">\(1 - \frac{SSE}{SST}\)</span>.</p>
 <p>Note: You <strong>must</strong> calculate the mean of your outcome, <span class="math inline">\(\bar{y}\)</span>, first and hand it off to <code>calc_rsquared</code>. Otherwise, your calculations for SST on a given core will be based only on the observations sent to that core, not the whole data set. (If you do this, <code>calc_rsquared</code> will give you a WARNING.)</p>
 <p>Below is a toy example using <code>parallel::mclapply</code> to run parallel computations calculating R-squared for our LDA model, above. (Yes, this is overkill for our toy problem and it will actually be slower due to overhead. But imagine the calculations for a corpus of ~1 million documents with hundreds-of-thousands or millions of unique tokens.)</p>
 <p>Because the below example uses parallel execution, which can be tricky when working with CRAN, I’m not actually evaluating it in this vignette. However, you can run the code yourself.</p>

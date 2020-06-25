@@ -12,6 +12,7 @@
 #'             computation in batches.
 #' @param return_ss_only Logical. Do you want to forego calculating R-squared and
 #'                       only return the sums of squares?
+#' @param threads Integer number of threads for parallelism; defaults to 1.
 #' @return
 #'     If \code{return_ss_only = FALSE}, \code{calc_rsqured} returns a numeric
 #'     scalar R-squared. If \code{return_ss_only = TRUE}, \code{calc_rsqured}
@@ -67,34 +68,14 @@
 #'
 #' # multivariate r-squared with yhat as a linear reconstruction of two matrices
 #' calc_rsquared(y = cbind(y, y), yhat = list(x, cbind(w,w)))
-#'
-#' # multivariate r-squared calculated in parallel
-#' \donttest{
-#' library(furrr)
-#'
-#' plan(multiprocess)
-#'
-#' batches <- list(list(y = cbind(y[1:16], y[1:16]), yhat = cbind(yhat[1:16], yhat[1:16])),
-#'                 list(y = cbind(y[17:32], y[17:32]), yhat = cbind(yhat[17:32], yhat[17:32])))
-#'
-#' ybar <- c(mean(y), mean(y))
-#'
-#' ss <- future_map(.x = batches,
-#'                  .f = function(ybatch){
-#'                    calc_rsquared(y = ybatch$y, yhat = ybatch$yhat,
-#'                                  ybar = ybar, return_ss_only = TRUE)
-#'                  },
-#'                  .options = future_options(scheduling = 2))
-#'
-#'
-#' sse <- sum(sapply(ss, function(x) x["sse"]))
-#'
-#' sst <- sum(sapply(ss, function(x) x["sst"]))
-#'
-#' 1 - sse / sst # final r-squared value here
-#'}
 #' @export
-calc_rsquared <- function(y, yhat, ybar = NULL, return_ss_only = FALSE) {
+calc_rsquared <- function(
+  y,
+  yhat,
+  ybar = NULL,
+  return_ss_only = FALSE,
+  threads = 1
+) {
 
   ### Preliminary input checking ----
   if (! is.logical(return_ss_only) || is.na(return_ss_only))
@@ -121,10 +102,13 @@ calc_rsquared <- function(y, yhat, ybar = NULL, return_ss_only = FALSE) {
   if (is.null(ybar))
     ybar <- Matrix::colMeans(Y)
 
-  result <- calc_sum_squares_latent(Y = Y,
-                                    X = Yhat[[1]],
-                                    W = Yhat[[2]],
-                                    ybar = ybar)
+  result <- calc_sum_squares_latent(
+    Y = Y,
+    X = Yhat[[1]],
+    W = Yhat[[2]],
+    ybar = ybar,
+    threads = threads
+  )
 
   if (return_ss_only) {
 
@@ -132,7 +116,11 @@ calc_rsquared <- function(y, yhat, ybar = NULL, return_ss_only = FALSE) {
 
   } else {
 
-    return(1 - result[1] / result[2])
+    out <- 1 - result[1] / result[2]
+
+    names(out) <- NULL
+
+    return(out)
 
   }
 }
