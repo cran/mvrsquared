@@ -1,3 +1,8 @@
+# mvrsquared v0.1.1
+This patches an error being thrown during testing on some Linux operating systems.
+The root cause seems to be an imprecise calculation introduced in parallel computing.
+See the note under `help(calc_rsquared)`.
+
 # mvrsquared v0.1.0 
 This version introduces parallel processing at the C++ level using RcppThread.
 

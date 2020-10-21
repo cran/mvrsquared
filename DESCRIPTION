@@ -2,7 +2,7 @@ Package: mvrsquared
 Type: Package
 Title: Compute the Coefficient of Determination for Vector or Matrix
         Outcomes
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Tommy", "Jones", role = c("aut", "cre"), email = "jones.thos.w@gmail.com")
     )
@@ -20,12 +20,12 @@ Imports: Matrix, methods, Rcpp (>= 1.0.2)
 Suggests: dplyr, furrr, knitr, MASS, nnet, parallel, rmarkdown, stats,
         stringr, testthat, textmineR, tidytext, spelling
 LinkingTo: Rcpp, RcppArmadillo, RcppThread
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Language: en-US
 NeedsCompilation: yes
-Packaged: 2020-06-25 03:29:10 UTC; tommy
+Packaged: 2020-10-21 02:53:44 UTC; tommy
 Author: Tommy Jones [aut, cre]
 Maintainer: Tommy Jones <jones.thos.w@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-06-25 06:00:06 UTC
+Date/Publication: 2020-10-21 04:50:02 UTC

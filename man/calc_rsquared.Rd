@@ -46,7 +46,12 @@ There is some flexibility in what you can pass as \code{y} and \code{yhat}.
     that \code{yhat[[1]]} left multiplies \code{yhat[[2]]}.
 }
 \note{
-Setting \code{return_ss_only} to \code{TRUE} is useful for parallel or
+On some Linux systems, setting \code{threads} greater than 1 for parallelism
+    may introduce some imprecision in the calculation. As of this writing, the
+    cause is still under investigation. In the meantime setting \code{threads = 1}
+    should fix the issue.
+
+    Setting \code{return_ss_only} to \code{TRUE} is useful for parallel or
     distributed computing for large data sets, particularly when \code{y} is
     a large matrix. However if you do parallel execution you MUST pre-calculate
     'ybar' and pass it to the function. If you do not, SST will be calculated
