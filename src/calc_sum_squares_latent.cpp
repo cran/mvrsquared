@@ -1,10 +1,13 @@
-// [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(RcppThread)]]
-// [[Rcpp::depends(RcppArmadillo)]]
-#include "RcppThread.h"
+
+#define ARMA_64BIT_WORD 1
 #include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::plugins(cpp11)]]
+
+// [[Rcpp::depends(RcppThread)]]
+#include "RcppThread.h"
 #include <cmath>
-#define ARMA_64BIT_WORD
+
 using namespace Rcpp ;
 
 // [[Rcpp::export]]

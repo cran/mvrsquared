@@ -1,9 +1,8 @@
 <!-- badges: start -->
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/TommyJones/mvrsquared?branch=main&svg=true)](https://ci.appveyor.com/project/TommyJones/mvrsquared)
-[![Travis-CI Build Status](https://travis-ci.com/TommyJones/mvrsquared.svg?branch=main)](https://travis-ci.com/TommyJones/mvrsquared)
 [![Coverage Status](https://img.shields.io/codecov/c/github/tommyjones/mvrsquared/main.svg)](https://codecov.io/gh/tommyjones/mvrsquared/branch/main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mvrsquared)](https://cran.r-project.org/package=mvrsquared)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/mvrsquared?color=orange)](https://CRAN.R-project.org/package=mvrsquared)
+[![R-CMD-check](https://github.com/TommyJones/mvrsquared/workflows/R-CMD-check/badge.svg)](https://github.com/TommyJones/mvrsquared/actions)
 <!-- badges: end -->
 
 # mvrsquared <img src='man/figures/logo.png' align="right" height="136.5" />

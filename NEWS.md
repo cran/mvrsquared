@@ -1,3 +1,6 @@
+# mvrsquared v0.1.2
+This patches an error thrown when using large data sets.
+
 # mvrsquared v0.1.1
 This patches an error being thrown during testing on some Linux operating systems.
 The root cause seems to be an imprecise calculation introduced in parallel computing.
