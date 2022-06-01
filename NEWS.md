@@ -1,3 +1,9 @@
+# mvrsquared v0.1.4
+This patch fixes an error on r-devel-linux-x86_64-debian-clang in CRAN checks.
+
+# mvrsquared v0.1.3
+This patch fixes a parallel issue that could've caused incorrect computations.
+
 # mvrsquared v0.1.2
 This patches an error thrown when using large data sets.
 

@@ -3,6 +3,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mvrsquared)](https://cran.r-project.org/package=mvrsquared)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/mvrsquared?color=orange)](https://CRAN.R-project.org/package=mvrsquared)
 [![R-CMD-check](https://github.com/TommyJones/mvrsquared/workflows/R-CMD-check/badge.svg)](https://github.com/TommyJones/mvrsquared/actions)
+[![R-CMD-check](https://github.com/TommyJones/mvrsquared/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TommyJones/mvrsquared/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # mvrsquared <img src='man/figures/logo.png' align="right" height="136.5" />

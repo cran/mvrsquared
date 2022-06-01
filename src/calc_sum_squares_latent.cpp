@@ -23,14 +23,10 @@ NumericVector calc_sum_squares_latent(
 
   int n_obs = Y.n_cols; // number of observations
   NumericVector result(2); // final result
-  double SSE = 0; // sum of squared errors across all documents
-  double SST = 0; // total sum of squares across all documents
+  arma::vec SSE(n_obs); // sum of squared errors across all documents
+  arma::vec SST(n_obs); // total sum of squares across all documents
 
-
-  // convert R equivalent classes to arma classes
-
-
-  // for each observations...
+  // // for each observations...
   RcppThread::parallelFor(
     0,
     n_obs,
@@ -60,15 +56,14 @@ NumericVector calc_sum_squares_latent(
 
       }
 
-      SSE = SSE + sse;
+      SSE(d) = sse;
 
-      SST = SST + sst;
+      SST(d) = sst;
     },
     threads);
 
-
-  result[ 0 ] = SSE;
-  result[ 1 ] = SST;
+  result[ 0 ] = sum(SSE);
+  result[ 1 ] = sum(SST);
 
   return result;
 
