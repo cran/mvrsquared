@@ -1,3 +1,6 @@
+# mvrsquared v0.1.5
+This patch updates C++11 requirement consistent with current CRAN compilers.
+
 # mvrsquared v0.1.4
 This patch fixes an error on r-devel-linux-x86_64-debian-clang in CRAN checks.
 

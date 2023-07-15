@@ -2,7 +2,7 @@ Package: mvrsquared
 Type: Package
 Title: Compute the Coefficient of Determination for Vector or Matrix
         Outcomes
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: c(
     person("Tommy", "Jones", role = c("aut", "cre"), email = "jones.thos.w@gmail.com",
            comment = c(ORCID = "0000-0001-6457-2452")),
@@ -27,9 +27,9 @@ RoxygenNote: 7.2.0
 VignetteBuilder: knitr
 Language: en-US
 NeedsCompilation: yes
-Packaged: 2022-06-01 17:55:24 UTC; tommy
+Packaged: 2023-07-14 23:23:11 UTC; tommy
 Author: Tommy Jones [aut, cre] (<https://orcid.org/0000-0001-6457-2452>),
   Thomas Nagler [ctb] (<https://orcid.org/0000-0003-1855-0046>)
 Maintainer: Tommy Jones <jones.thos.w@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-06-01 18:20:02 UTC
+Date/Publication: 2023-07-15 00:10:02 UTC
