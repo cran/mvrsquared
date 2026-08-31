@@ -34,10 +34,13 @@
 #'     that \code{yhat[[1]]} left multiplies \code{yhat[[2]]}.
 #'
 #' @note
-#'     On some Linux systems, setting \code{threads} greater than 1 for parallelism
-#'     may introduce some imprecision in the calculation. As of this writing, the
-#'     cause is still under investigation. In the meantime setting \code{threads = 1}
-#'     should fix the issue.
+#'     Results do not depend on \code{threads}. Each observation's contribution
+#'     is written to its own slot and the totals are summed sequentially
+#'     afterwards, so the answer is the same however the work is scheduled.
+#'     Earlier versions carried a warning that parallelism could introduce
+#'     imprecision on some Linux systems; that is no longer believed to be the
+#'     case, and thread counts from 1 to 12 were verified to give bit-identical
+#'     results as of version 0.1.6.
 #'
 #'     Setting \code{return_ss_only} to \code{TRUE} is useful for parallel or
 #'     distributed computing for large data sets, particularly when \code{y} is
@@ -107,13 +110,26 @@ calc_rsquared <- function(
   if (is.null(ybar))
     ybar <- Matrix::colMeans(Y)
 
-  result <- calc_sum_squares_latent(
-    Y = Y,
-    X = Yhat[[1]],
-    W = Yhat[[2]],
-    ybar = ybar,
-    threads = threads
-  )
+  # Two routines, because the two cases are genuinely different computations.
+  # When yhat is a factorization we never form the prediction; when yhat is
+  # given directly there is nothing to factor and pretending otherwise is what
+  # used to cost O(V^2). See handle_yhat().
+  result <- if (Yhat$latent) {
+    calc_sum_squares_latent(
+      Y = Y,
+      X = Yhat$x,
+      W = Yhat$w,
+      ybar = ybar,
+      threads = threads
+    )
+  } else {
+    calc_sum_squares(
+      Y = Y,
+      Yhat = Yhat$yhat,
+      ybar = ybar,
+      threads = threads
+    )
+  }
 
   if (return_ss_only) {
 
@@ -256,26 +272,25 @@ handle_yhat <- function(yhat, dim_y) {
   # CAVEAT EMPTOR!
 
   # format yhat
+  #
+  # A yhat that is already the prediction is returned as such, NOT as a fake
+  # factorization. It used to come back as x = yhat with w = diag(ncol(yhat)),
+  # so that one code path could serve both cases --- but that identity matrix is
+  # V by V, which is O(V^2) memory and turns an O(D * V) computation into
+  # O(D * V^2). At V = 20,926 the identity alone is 3.5 GB. calc_rsquared()
+  # dispatches on `latent` below.
   if (is.vector(yhat) && ! is.list(yhat)) {
 
-    x <- matrix(yhat, ncol = 1)
-
-    w <- matrix(1, ncol = 1, nrow = 1)
+    list(latent = FALSE, yhat = matrix(yhat, ncol = 1))
 
   } else if (is.matrix(yhat)) {
 
-    x <- yhat
-
-    w <- diag(ncol(yhat))
+    list(latent = FALSE, yhat = yhat)
 
   } else { # must be a list. If it wasn't, would've gotten an error above
 
-    x <- yhat[[1]]
-
-    w <- yhat[[2]]
+    list(latent = TRUE, x = yhat[[1]], w = yhat[[2]])
 
   }
-
-  list(x = x, w = w)
 
 }

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Tommy Jones" />
 
-<meta name="date" content="2023-07-14" />
+<meta name="date" content="2026-08-31" />
 
 <title>Getting Started With mvrsquared</title>
 
@@ -50,6 +50,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -340,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Getting Started With mvrsquared</h1>
 <h4 class="author">Tommy Jones</h4>
-<h4 class="date">2023-07-14</h4>
+<h4 class="date">2026-08-31</h4>
 
 
 
@@ -399,7 +400,7 @@ shouldn’t trust it. (Spoiler alert again: it can and you should.)</p>
 <span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co"># just to be 100% sure...</span></span>
 <span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>r2_lm <span class="sc">==</span> r2_mv</span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>You can also calculate R-squared by passing your data and your linear
 weights. (That’s probably less useful for univariate outcome models.
 But, as you’ll see below, it’s very important for latent variable models
@@ -427,7 +428,7 @@ calculation due to numeric precision.</p>
 <p>However, the difference is tiny. Below demonstrates that they are the
 same up to 14 decimal places in this example.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">round</span>(r2_mv2, <span class="dv">14</span>) <span class="sc">==</span> <span class="fu">round</span>(r2_lm, <span class="dv">14</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 </div>
 <div id="multivariate-r-squared" class="section level1">
 <h1>Multivariate R-squared</h1>
@@ -473,23 +474,23 @@ predicting two variables at once.</p>
 <span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; # weights:  62</span></span>
 <span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; initial  value 6406.585738 </span></span>
 <span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; iter  10 value 3246.812009</span></span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; iter  20 value 1446.678774</span></span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; iter  30 value 1060.315445</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; iter  40 value 1004.698287</span></span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; iter  50 value 961.043723</span></span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; iter  60 value 932.089225</span></span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; iter  70 value 907.861456</span></span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; iter  80 value 901.751981</span></span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt; iter  90 value 899.029455</span></span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; iter 100 value 896.508832</span></span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt; final  value 896.508832 </span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; iter  20 value 1446.678668</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; iter  30 value 1063.518404</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; iter  40 value 983.081692</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; iter  50 value 950.529133</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; iter  60 value 930.745473</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; iter  70 value 921.090435</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; iter  80 value 918.131665</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt; iter  90 value 914.934798</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; iter 100 value 911.599072</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt; final  value 911.599072 </span></span>
 <span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; stopped after 100 iterations</span></span>
 <span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a></span>
 <span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>(f_mv, <span class="fu">data.frame</span>(<span class="at">x1 =</span> x1, <span class="at">x2 =</span> x2, <span class="at">x3 =</span> x3), <span class="at">type =</span> <span class="st">&quot;raw&quot;</span>)</span>
 <span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a></span>
 <span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="co"># and now calculate r-squared</span></span>
 <span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="fu">calc_rsquared</span>(<span class="at">y =</span> <span class="fu">cbind</span>(y1, y2), <span class="at">yhat =</span> yhat)</span>
-<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#&gt; [1] 0.8094835</span></span></code></pre></div>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#&gt; [1] 0.8062767</span></span></code></pre></div>
 </div>
 </div>
 <div id="probabilistic-topic-modeling" class="section level2">

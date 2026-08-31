@@ -140,47 +140,47 @@ r2_lsa
 
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  library(parallel)
-#  
-#  batch_size <- 10
-#  
-#  batches <- mclapply(X = seq(1, nrow(dtm), by = batch_size),
-#                      FUN = function(b){
-#  
-#                        # rows to select on
-#                        rows <- b:min(b + batch_size - 1, nrow(dtm))
-#  
-#                        # rows of the dtm
-#                        y_batch <- dtm[rows, ]
-#  
-#                        # rows of theta multiplied by document length
-#                        x_batch <- rowSums(y_batch) * lda$theta[rows, ]
-#  
-#                        list(y = y_batch,
-#                             x = x_batch)
-#                      }, mc.cores = 2)
-#  
-#  
-#  # calculate ybar for the data
-#  # in this case, lazily doing colMeans, but you could divide this problem up too
-#  ybar <- colMeans(dtm)
-#  
-#  # MAP: calculate sums of squares
-#  ss <- mclapply(X = batches,
-#                 FUN = function(batch){
-#                   calc_rsquared(y = batch$y,
-#                                 yhat = list(x = batch$x, w = lda$phi),
-#                                 ybar = ybar,
-#                                 return_ss_only = TRUE)
-#                 }, mc.cores = 2)
-#  
-#  
-#  # REDUCE: get SST and SSE by summation
-#  ss <- do.call(rbind, ss) %>% colSums()
-#  
-#  r2_mapreduce <- 1 - ss["sse"] / ss["sst"]
-#  
-#  # should be the same as above
-#  r2_mapreduce
-#  
+# library(parallel)
+# 
+# batch_size <- 10
+# 
+# batches <- mclapply(X = seq(1, nrow(dtm), by = batch_size),
+#                     FUN = function(b){
+# 
+#                       # rows to select on
+#                       rows <- b:min(b + batch_size - 1, nrow(dtm))
+# 
+#                       # rows of the dtm
+#                       y_batch <- dtm[rows, ]
+# 
+#                       # rows of theta multiplied by document length
+#                       x_batch <- rowSums(y_batch) * lda$theta[rows, ]
+# 
+#                       list(y = y_batch,
+#                            x = x_batch)
+#                     }, mc.cores = 2)
+# 
+# 
+# # calculate ybar for the data
+# # in this case, lazily doing colMeans, but you could divide this problem up too
+# ybar <- colMeans(dtm)
+# 
+# # MAP: calculate sums of squares
+# ss <- mclapply(X = batches,
+#                FUN = function(batch){
+#                  calc_rsquared(y = batch$y,
+#                                yhat = list(x = batch$x, w = lda$phi),
+#                                ybar = ybar,
+#                                return_ss_only = TRUE)
+#                }, mc.cores = 2)
+# 
+# 
+# # REDUCE: get SST and SSE by summation
+# ss <- do.call(rbind, ss) %>% colSums()
+# 
+# r2_mapreduce <- 1 - ss["sse"] / ss["sst"]
+# 
+# # should be the same as above
+# r2_mapreduce
+# 
 

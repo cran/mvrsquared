@@ -5,3 +5,7 @@ calc_sum_squares_latent <- function(Y, X, W, ybar, threads) {
     .Call(`_mvrsquared_calc_sum_squares_latent`, Y, X, W, ybar, threads)
 }
 
+calc_sum_squares <- function(Y, Yhat, ybar, threads) {
+    .Call(`_mvrsquared_calc_sum_squares`, Y, Yhat, ybar, threads)
+}
+
